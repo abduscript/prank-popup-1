@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan Penting</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 10px;
+            background: linear-gradient(to right, #32599c, #da251c, #85c226);
+            overflow: hidden;
+        }
+        .popup {
+            position: absolute;
+            background: white;
+            color: black;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            transition: all 0.3s ease-in-out;
+            max-width: 90%;
+        }
+        .btn-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .btn {
+            background: #000000;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+            flex: 1 1 auto;
+            min-width: 120px;
+        }
+        .btn:hover {
+            background: #323232;
+        }
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+        }
+    </style>
+</head>
+<body>
+
+<div id="popup" class="popup">
+    <p><strong>PENGAKUAN!</strong> Jujur aja, kamu gay kan?!</p>
+    <div class="btn-container">
+        <button id="okBtn" class="btn">IYA GW GAY (KLIK DENGAN BANGGA)</button>
+        <button id="cancelBtn" class="btn">gw bukan Gay kocak!</button>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+    let popup = document.getElementById("popup");
+    let cancelBtn = document.getElementById("cancelBtn");
+
+    cancelBtn.addEventListener("click", function() {
+        let randomTop = Math.floor(Math.random() * (window.innerHeight - 120)) + "px";
+        let randomLeft = Math.floor(Math.random() * (window.innerWidth - 200)) + "px";
+        
+        popup.style.top = randomTop;
+        popup.style.left = randomLeft;
+        popup.classList.add("shake");
+
+        setTimeout(() => {
+            popup.classList.remove("shake");
+        }, 300);
+    });
+
+    document.getElementById("okBtn").addEventListener("click", function() {
+        let nama = prompt("Masukin dulu nih nama lu:");
+        if (nama === null) return; 
+        if (!nama.trim()) nama = "Seseorang"; 
+
+        alert("Nah! Tuh Ngaku, Dari dulu kek. 😂");
+        popup.style.display = "none";
+
+        // Auto download teks sebagai PDF
+        const { jsPDF } = window.jspdf;
+        let doc = new jsPDF();
+
+        doc.setFont("times", "bold");
+        doc.setFontSize(14);
+        doc.text("REPUBLIK JENAKA", 105, 20, { align: "center" });
+        doc.setFontSize(12);
+        doc.text("PT. PERTAMINA PATRA NIAGA", 105, 30, { align: "center" });
+        doc.setLineWidth(0.5);
+        doc.line(20, 35, 190, 35);
+
+        doc.setFont("times", "normal");
+        doc.setFontSize(12);
+        doc.text("Nomor: 007/XXI/2025", 20, 50);
+        doc.text("Lampiran: 1 Lembar", 20, 60);
+        doc.text("Perihal: Pernyataan Pengakuan", 20, 70);
+
+        doc.text("Kepada Yth.", 20, 90);
+        doc.text("Pihak yang bersangkutan", 20, 100);
+        doc.text("di Tempat", 20, 110);
+
+        doc.text("Dengan ini menyatakan bahwa saya mengakui secara sadar dan tanpa paksaan bahwa", 20, 130);
+        doc.setFont("times", "bold");
+        doc.text(`saya ${nama.toUpperCase()} adalah seorang gay`, 20, 140);
+        doc.setFont("times", "normal");
+        doc.text("Demikian surat ini saya buat dengan sebenar-benarnya dan saya siap\n\nmempertanggungjawabkan pernyataan ini di kemudian hari.", 20, 150);
+
+        doc.text("Jakarta, 9 Maret 2025", 140, 180);
+        doc.text("Yang bersangkutan,", 140, 190);
+        doc.text(`(${nama.toUpperCase()})`, 140, 220);
+
+        doc.save("pengakuan.pdf");
+    });
+</script>
+
+</body>
+</html>
